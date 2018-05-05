@@ -88,10 +88,14 @@ class HeartModel:
 
         x_values = self.data[l_x]
 
-        rl_model = RandomForestClassifier()
+        rl_model = RandomForestClassifier(n_estimators=10, max_depth=5)
         y_values = np.ravel(y_values)
 
-        rl_model.fit(x_values, y_values)
+        lrfit = rl_model.fit(x_values, y_values)
+        print('\nRandomForest score on full data set: {}\n'.format(lrfit.score(x_values, y_values)))
+        ypred = rl_model.predict(x_values)
+        print('\nConfusion matrix:')
+        print(metrics.classification_report(y_values, ypred))
 
         return rl_model
 
@@ -101,11 +105,13 @@ class HeartModel:
         for k, v in data.items():
             data[k] = float(v)
 
-        for key in stdcols:
-            data[key] = (data[key]-self.mean_dict[key])/self.std_dict[key]
+        if self.model == LogisticRegression:
+            print("TEST")
+            for key in stdcols:
+                data[key] = (data[key]-self.mean_dict[key])/self.std_dict[key]
 
-        data["age"] = data["age"] / self.age_max
-        data["ca"] = data["ca"] / self.ca_max
+            data["age"] = data["age"] / self.age_max
+            data["ca"] = data["ca"] / self.ca_max
 
         return np.array([float(val) for val in data.values()]).reshape(1, -1)
 
