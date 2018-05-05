@@ -4,9 +4,6 @@ from heart_model import HeartModel
 
 
 class EnableCors(object):
-    name = 'enable_cors'
-    api = 2
-
     def apply(self, fn, context):
         def _enable_cors(*args, **kwargs):
             # set CORS headers
@@ -42,6 +39,7 @@ class HeartApp:
         print(str(result[0]))
 
         response.content_type = 'application/json'
+        response.headers['Access-Control-Allow-Origin'] = '*'
         return {"pred": str(result[0])}
 
 
