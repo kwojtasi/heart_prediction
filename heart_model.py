@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 
 
@@ -16,7 +17,7 @@ class HeartModel:
         self.age_max = 100.0
         self.ca_max = 3.0
 
-        self.model = self.heart_model()
+        self.model = self.random_forest_model()
 
     def dummies_for_categorical_data(self):
         dummies = pd.get_dummies(self.data["cp"], prefix="cp")
@@ -58,7 +59,7 @@ class HeartModel:
 
         return data
 
-    def heart_model(self):
+    def rl_model(self):
         data_norm = self.normalize_data(self.data)
 
         labels = list(data_norm.columns.values)
@@ -70,6 +71,24 @@ class HeartModel:
         x_values = data_norm[l_x]
 
         rl_model = LogisticRegression(fit_intercept=True, penalty="l1", dual=False, C=1.0)
+        y_values = np.ravel(y_values)
+
+        rl_model.fit(x_values, y_values)
+
+        return rl_model
+
+    def random_forest_model(self):
+        """No need to normalize data for this model."""
+
+        labels = list(self.data.columns.values)
+
+        y_values = self.data[["pred"]]
+
+        l_x = list(filter(lambda x: x != 'pred', labels))
+
+        x_values = self.data[l_x]
+
+        rl_model = RandomForestClassifier()
         y_values = np.ravel(y_values)
 
         rl_model.fit(x_values, y_values)
