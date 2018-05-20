@@ -129,7 +129,7 @@ class HeartModel:
 
         print(random_grid)
 
-        rf_random = RandomizedSearchCV(estimator=model, param_distributions=random_grid, n_iter=100, cv=5, verbose=2,
+        rf_random = RandomizedSearchCV(estimator=model, param_distributions=random_grid, n_iter=200, cv=3, verbose=2,
                                        random_state=42, n_jobs=-1)
         # Fit the random search model
         rf_random.fit(self.x_values, self.y_values)
@@ -170,7 +170,8 @@ class HeartModel:
     def predict(self, data):
         norm_data = self.normalize_dict_data(data)
         print(norm_data)
-        return self.model.predict(norm_data)
+        print(self.model.predict(norm_data))
+        return self.model.predict_proba(norm_data)[0][1]
 
 
 def main():
