@@ -36,11 +36,7 @@ class HeartApp:
     def predict(self):
         data = request.json
         result = self.model.predict(data)
-        print(str(result[0]))
-
-        response.content_type = 'application/json'
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        return {"pred": str(result[0])}
+        return {"pred": str(result)}
 
 
 if __name__ == '__main__':
