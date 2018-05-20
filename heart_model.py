@@ -26,9 +26,11 @@ class HeartModel:
         # rl_model = RandomForestClassifier(random_state=0)
         # scores = self.randomize_search(rl_model)
         # params = scores.best_params_
-        params = {'n_estimators': 1000, 'min_samples_split': 2, 'min_samples_leaf': 4,
-                  'max_features': 2, 'max_depth': 3, 'bootstrap': False}
+        params = {'n_estimators': 1000, 'min_samples_split': 2, 'min_samples_leaf': 2,
+                  'max_features': 3, 'max_depth': 5, 'bootstrap': False}
         self.model = self.random_forest_model(**params)
+
+        print("Cross validation: {}".format(self.cross_val_model(self.model)))
 
         for feature in zip(self.labels, self.model.feature_importances_):
             print(feature)
