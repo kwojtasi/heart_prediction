@@ -1,6 +1,7 @@
 from bottle import Bottle, request, response
 
 from heart_model import HeartModel
+from nn_model import NetworkModel
 
 
 class EnableCors(object):
@@ -22,7 +23,8 @@ class HeartApp:
     def __init__(self, host, port):
         self._host = host
         self._port = port
-        self.model = HeartModel()
+        # self.model = HeartModel()
+        self.model2 = NetworkModel()
         self._app = Bottle()
 
         self._route()
@@ -35,7 +37,8 @@ class HeartApp:
 
     def predict(self):
         data = request.json
-        result = self.model.predict(data)
+        result = self.model2.predict(data)
+        print(result)
         return {"pred": str(result)}
 
 
