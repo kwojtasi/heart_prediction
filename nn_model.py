@@ -40,7 +40,7 @@ class NetworkModel:
         x_prep = self.prepare_data(x)
         x_norm = self.normalize_data(x_prep)
         print(x_norm)
-        return self.model.predict(x_norm)
+        return self.model.predict(x_norm)[0][0]
 
     def prepare_data(self, data):
         for k, v in data.items():
